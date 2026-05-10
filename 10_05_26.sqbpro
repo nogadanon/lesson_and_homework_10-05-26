@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="10_05_26.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1132"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="citizens" custom_title="0" dock_id="2" table="4,8:maincitizens"/><dock_state state="000000ff00000000fd000000010000000200000402000004effc0100000002fb000000160064006f0063006b00420072006f007700730065003101000000000000050f0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000000004020000011e00ffffff000002690000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="citizens" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="0" mode="0"/></sort><column_widths><column index="1" value="62"/><column index="2" value="202"/><column index="3" value="84"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- Create a citizens table with columns: citizen_id (PK AUTOINCREMENT), full_name TEXT NOT NULL, city TEXT.
+CREATE TABLE citizens (
+citizen_id INTEGER  PRIMARY KEY AUTOINCREMENT,
+full_name TEXT NOT NULL,
+city TEXT
+);
+
+-- Create an id_cards table with citizen_id as both PK and FK referencing citizens(citizen_id) with ON DELETE CASCADE. Also add card_number TEXT UNIQUE NOT NULL and expires TEXT.
+CREATE TABLE id_cards (
+citizen_id INTEGER PRIMARY KEY,
+card_number TEXT UNIQUE NOT NULL,
+expires TEXT,
+FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
+ON DELETE CASCADE
+);
+
+-- Insert 3 citizens: Sophia Martinez (Barcelona), James Chen (Toronto), Amira Hassan (Cairo).
+INSERT INTO citizens (full_name, city)
+VALUES ('Sophia Martinez', 'Barcelona'), 
+('James Chen', 'Toronto'),
+('Amira Hassan', 'Cairo');
+
+-- Insert 2 cards: Sophia (ID-2024-5521, expires: 2032-12-15) and James (ID-2023-7744, expires: 2031-08-22). Leave Amira without a card.
+INSERT INTO id_cards (citizen_id, card_number, expires)
+VALUES (1, 'ID-2024-5521', '2032-12-15'),
+(2, 'ID-2023-7744', '2031-08-22');
+
+
+-- Write an INNER JOIN query to list citizens with their card number.
+-- Write a LEFT JOIN query to show ALL citizens — displaying 'No card' for those without one.
+-- Try inserting a second id card for citizen id 1. What error do you get and why?
+-- Delete a citizen (who has an id card). Then query the id_cards table. What happened to their card? Why?</sql><current_tab id="0"/></tab_sql></sqlb_project>
